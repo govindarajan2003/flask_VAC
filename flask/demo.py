@@ -1,5 +1,5 @@
 from flask import Flask,redirect,url_for, request, render_template
-
+from flask_mail import Mail,Message
 app= Flask(__name__)
 
 from flask_wtf import CSRFProtect
@@ -85,6 +85,36 @@ def inputprocess():
 @app.route("/styles")
 def styles():
     return render_template("demo_static.html")
+
+#MAIL
+mail= Mail(app)
+
+app.config['MAIL_SERVER'] ='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] ='customerproject404nf@gmail.com'
+app.config['MAIL_PASSWORD'] ='nowdlnospvmgsoth'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] =True
+
+
+@app.route('/mail_demo')
+def mail_demo():
+    msg = Message('HELLO',sender= 'customerproject404nf@gmail.com',recipients=['karthikeyan96883@gmail.com'])
+    msg.body = "Hello"
+    mail.send(msg)
+    return "SENT"
+
+#upload
+@app.route('/upload')
+def upload():
+    return render_template('upload.html')
+
+@app.route('/uploader',methods=['GET','POST'])
+def uploader():
+    if request.method == 'POST':
+        f = request.files['file']
+        f.save(f.filename)
+        return 'uploaded successfuly'
 
 if __name__ == '__main__':
     app.run(debug=True)
