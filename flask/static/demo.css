@@ -1,0 +1,13 @@
+h1
+{
+    text-align: center;
+    color:  black ;
+    font-size: 35px;
+    text-decoration: underline;
+    letter-spacing: 10px;
+    background-color: red;
+}
+body
+{
+    background-color: rebeccapurple;
+}

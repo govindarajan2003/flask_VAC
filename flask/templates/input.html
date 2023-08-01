@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,7 +27,8 @@
                 </select></td>
             </tr>
             <tr>
-                <td><input type="submit" name="b1"></td>
+                <td><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"></td>
+                <button type="submit"> Submit</button>
             </tr>
         </table>
     </form>

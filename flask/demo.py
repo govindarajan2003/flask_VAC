@@ -2,6 +2,10 @@ from flask import Flask,redirect,url_for, request, render_template
 
 app= Flask(__name__)
 
+from flask_wtf import CSRFProtect
+app.secret_key="karthisree"
+csrf = CSRFProtect(app)
+
 #BASIC
 @app.route('/kcet')
 def index():
@@ -78,6 +82,9 @@ def inputprocess():
     city = request.form['city']
     return render_template("show.html", name = name , gender = gender, city= city)
 
+@app.route("/styles")
+def styles():
+    return render_template("demo_static.html")
 
 if __name__ == '__main__':
     app.run(debug=True)
