@@ -1,0 +1,17 @@
+<html>
+    <body>
+        <h1>Anime Name {{ anime }} </h1>
+
+        <h2> CHARACTER</h2>
+        {% for k,v in character.items() %}
+        {{k}} {{v}}<br>
+        {% endfor %}
+
+        <h1>IF example</h1>
+        {% if n>=0 %}
+        <h2>positive num</h2>
+        {% else %}
+        <h2>negative num</h2>
+        {% endif %}
+    </body>
+</html>
