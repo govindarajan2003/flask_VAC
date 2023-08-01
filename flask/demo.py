@@ -138,11 +138,13 @@ def flash_index():
 def flash_login():
     error=None
     if request.method == 'POST':
-        error = 'invalid user password'
-    else:
-        flash('Successfully login')
-        flash('example for flash')
-        flash('vasi')
+        
+        if request.form['username'] != 'govind' or request.form['password'] != 'govind':
+            error = 'invalid user password'
+        else:
+            flash('Successfully login')
+            flash('example for flash')
+            flash('vasi')
     return render_template('flash_login.html',error=error)
 
 if __name__ == '__main__':
