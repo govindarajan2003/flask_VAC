@@ -1,5 +1,6 @@
 from flask import Flask,redirect,url_for, request, render_template
 from flask_mail import Mail,Message
+from flask import send_file
 app= Flask(__name__)
 
 from flask_wtf import CSRFProtect
@@ -113,8 +114,19 @@ def upload():
 def uploader():
     if request.method == 'POST':
         f = request.files['file']
-        f.save(f.filename)
+        f.save(f.filename )
         return 'uploaded successfuly'
+
+#download
+
+@app.route('/download_index')
+def download():
+    return render_template("download.html")
+
+@app.route('/download')
+def download_file():
+    path = "tokyo-revengers-2.jpg"
+    return send_file(path,as_attachment=True)
 
 if __name__ == '__main__':
     app.run(debug=True)

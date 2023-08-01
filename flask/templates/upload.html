@@ -1,9 +1,28 @@
+
 <html>
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static',filename = 'demo.css' ) }}" type="text/css" rel = "stylesheet"/>
+    </head>
     <body>
-        <form action="/uploader" method="post" enctype="multipart/form-data">
-            <input type="file" name="file">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-            <input type="submit">
-        </form>
+        <div>
+            <h1>To Upload</h1>
+            <form action="/uploader" method="post" enctype="multipart/form-data">
+                <input type="file" name="file">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="submit">
+            </form>
+        </div>
+       
+        <div>
+            <h1>To Download</h1>
+            <form action="/download">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="submit">
+            </form>
+            <a href="{{ url_for('.download_file')}}">Download</a>
+        </div>
+        
+        
+
     </body>
 </html>
