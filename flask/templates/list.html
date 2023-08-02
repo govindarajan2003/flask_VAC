@@ -1,0 +1,21 @@
+<html>
+    <body>
+        <table border="1">
+            <th>regno</th>
+            <th>name</th>
+            <th>degree</th>
+            <th>cgp</th>
+
+            {% for row in rows %}
+            <tr>
+                <td>{{ row[0] }}</td>
+                <td>{{ row[1] }}</td>
+                <td>{{ row[2] }}</td>
+                <td>{{ row[3] }}</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+        <a href="/">Go back to home page</a>
+    </body>
+</html>

@@ -171,7 +171,7 @@ def contact():
 def new_student():
     return render_template("student.html")
 
-@app.route('/addrec',methods['POST','GET'])
+@app.route('/addrec',methods=['POST','GET'])
 def addrec():
     if request.method =='POST':
         regno = int(request.form['t1'])
@@ -179,13 +179,25 @@ def addrec():
         degree = request.form['t3']
         cgp = float(request.form['t4'])
 
-        db = MySQLdb.connect("localhost","root","","kcet")
+        db = MySQLdb.connect("localhost","root","","mikey")
         c1 = db.cursor()
-        c1.execute("insert into students(regno,name,degree,cgp) values('%d','%s','%s','%f')")
+        c1.execute("insert into students(regno,name,degree,cgp) values('%d','%s','%s','%f')"%(regno,name,degree,cgp))
+        db.commit()
+        msg = "successfully added"
+        return render_template("result.html", msg=msg)
 
 
+@app.route('/list')
+def list():
+    db = MySQLdb.connect("localhost","root","","mikey")
+    c1 = db.cursor()
+    c1.execute("select * from students")
+    rows = c1.fetchall()
+    return render_template("list.html",rows =rows)
 
-
+@app.route('/')
+def home():
+    return render_template("home.html")
 
 
 if __name__ == '__main__':
