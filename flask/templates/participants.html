@@ -1,0 +1,23 @@
+<html>
+    <body>
+        <table border="1">
+            <th>name</th>
+            <th>email</th>
+            <th>city</th>
+            <th>country</th>
+            <th>phone</th>
+
+            {% for row in rows %}
+            <tr>
+                <td>{{ row[0] }}</td>
+                <td>{{ row[1] }}</td>
+                <td>{{ row[2] }}</td>
+                <td>{{ row[3] }}</td>
+                <td>{{ row[4] }}</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+        <a href="/s_home">Go back to home page</a>
+    </body>
+</html>

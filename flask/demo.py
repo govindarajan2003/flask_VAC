@@ -4,6 +4,7 @@ from flask import send_file
 from forms import ContactForm
 from flask import*
 import MySQLdb
+import sqlite3
 
 app= Flask(__name__)
 app.secret_key="karthisree"
@@ -152,7 +153,8 @@ def flash_login():
             flash('example for flash')
             flash('vasi')
     return render_template('flash_login.html',error=error)'''
-
+'''
+#dbms
 
 @app.route('/contact',methods=['POST','GET'])
 def contact():
@@ -198,6 +200,42 @@ def list():
 @app.route('/')
 def home():
     return render_template("home.html")
+'''
+#sqlite
+
+@app.route('/')
+@app.route('/s_home')
+def index():
+    return render_template('sqlite_index.html')
+
+connect = sqlite3.connect('database.db')
+connect.execute('CREATE TABLE IF NOT EXISTS PARTICIPANTS(name TEXT,email TEXT,city TEXT,country TEXT,phone TEXT)')
+
+@app.route('/join',methods=['GET','POST'])
+def join():
+    if request.method =='POST':
+        name = request.form['name']
+        email = request.form['email']
+        city = request.form['city']
+        country = request.form['country']
+        phone = request.form['phone']
+
+        with sqlite3.connect("database.db")as user:
+            cursor = user.cursor()
+            cursor.execute("INSERT INTO PARTICIPANTS(name,email,city,country,phone) VALUES(?,?,?,?,?)",(name,email,city,country,phone))
+            user.commit()
+        return render_template("sqlite_index.html")
+    else:
+        return render_template("join.html")
+
+@app.route('/participants')
+def participants():
+    db = sqlite3.connect('database.db')
+    cursor = db.cursor()
+    cursor.execute('SELECT * FROM PARTICIPANTS')
+
+    data = cursor.fetchall()
+    return render_template("participants.html",data = data)
 
 
 if __name__ == '__main__':
