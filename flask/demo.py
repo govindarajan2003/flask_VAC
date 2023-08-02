@@ -3,9 +3,10 @@ from flask_mail import Mail,Message
 from flask import send_file
 from forms import ContactForm
 app= Flask(__name__)
-
-from flask_wtf import CSRFProtect
 app.secret_key="karthisree"
+'''
+from flask_wtf import CSRFProtect
+
 csrf = CSRFProtect(app)
 
 #BASIC
@@ -147,21 +148,21 @@ def flash_login():
             flash('Successfully login')
             flash('example for flash')
             flash('vasi')
-    return render_template('flash_login.html',error=error)
+    return render_template('flash_login.html',error=error)'''
 
 
-@app.route('/contact',methods=['post','get'])
+@app.route('/contact',methods=['POST','GET'])
 def contact():
-    form =ContactForm();
+    form =ContactForm()
 
-    if request.method == 'post':
+    if request.method == 'POST':
         if form.validate():
             flash('ALL FIELDS ARE REQUIRED')
             return render_template('contact.html', form= form)
         else:
             return render_template('success.html', form = form)
-            
-
+    else:
+        return render_template('contact.html', form = form )
 
 
 if __name__ == '__main__':
