@@ -2,6 +2,9 @@ from flask import Flask,redirect,url_for, request, render_template
 from flask_mail import Mail,Message
 from flask import send_file
 from forms import ContactForm
+from flask import*
+import MySQLdb
+
 app= Flask(__name__)
 app.secret_key="karthisree"
 '''
@@ -163,6 +166,26 @@ def contact():
             return render_template('success.html', form = form)
     else:
         return render_template('contact.html', form = form )
+
+@app.route('/enternew')
+def new_student():
+    return render_template("student.html")
+
+@app.route('/addrec',methods['POST','GET'])
+def addrec():
+    if request.method =='POST':
+        regno = int(request.form['t1'])
+        name = request.form['t2']
+        degree = request.form['t3']
+        cgp = float(request.form['t4'])
+
+        db = MySQLdb.connect("localhost","root","","kcet")
+        c1 = db.cursor()
+        c1.execute("insert into students(regno,name,degree,cgp) values('%d','%s','%s','%f')")
+
+
+
+
 
 
 if __name__ == '__main__':
