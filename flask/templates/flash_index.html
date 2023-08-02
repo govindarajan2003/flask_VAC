@@ -11,5 +11,15 @@
         {% endwith %}
         <h1>Flash message Flashing Example</h1>
         <p>Do you want <a href="{{ url_for('flash_login')}}"><b>log in?</b></a></p>
+
+        <form action="{{ url_for('flash_login') }}" method="post">
+            <!-- Include the CSRF token in the form -->
+            {{ csrf_token() }}
+            <label for="username">Username:</label>
+            <input type="text" name="username" required>
+            <label for="password">Password:</label>
+            <input type="password" name="password" required>
+            <input type="submit" value="Login">
+        </form>
     </body>
 </html>

@@ -1,0 +1,16 @@
+<html>
+    <body>
+        <h1>login</h1>
+        {% if error %}
+        <p><strong>error:</strong>{{ error }}
+            {% endif %}
+            <form action="/flash_login" method="post">
+                <h1>username</h1><br>
+                <input type="text" name="username" value="{{request.form.username}}">
+                <h1>password</h1><br>
+                <input type="password" name="password">
+                <p><input type="submit" value="Login"></p>
+            </form>
+        </p>
+    </body>
+</html>

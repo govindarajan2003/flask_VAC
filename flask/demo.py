@@ -1,6 +1,7 @@
 from flask import Flask,redirect,url_for, request, render_template
 from flask_mail import Mail,Message
 from flask import send_file
+from forms import ContactForm
 app= Flask(__name__)
 
 from flask_wtf import CSRFProtect
@@ -128,6 +129,7 @@ def download_file():
     path = "tokyo-revengers-2.jpg"
     return send_file(path,as_attachment=True)
 
+
 #flash
 
 @app.route('/flash_index')
@@ -146,6 +148,21 @@ def flash_login():
             flash('example for flash')
             flash('vasi')
     return render_template('flash_login.html',error=error)
+
+
+@app.route('/contact',methods=['post','get'])
+def contact():
+    form =ContactForm();
+
+    if request.method == 'post':
+        if form.validate():
+            flash('ALL FIELDS ARE REQUIRED')
+            return render_template('contact.html', form= form)
+        else:
+            return render_template('success.html', form = form)
+            
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
