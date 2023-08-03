@@ -6,7 +6,7 @@ from flask import*
 import MySQLdb
 import sqlite3
 from flask_sqlalchemy import SQLAlchemy
-from pymango import MongoClient
+from pymongo import MongoClient
 app= Flask(__name__)
 app.secret_key="karthisree"
 
@@ -286,7 +286,7 @@ def add_data():
     coll =db['example']
 
     #insert docs into a collection
-    doc1 = {"_id":"103","name":"Govind","age":"20","city":"Madurai"}
+    doc1 = {"_id":"104","name":"Arsadh","age":"20","city":"Madurai"}
     coll.insert_one(doc1)
     print(coll.find_one())
     return 'data added to MangoDB'
@@ -304,8 +304,17 @@ def add_multiple_data():
     
     data =[
         {
-             {"_id":"96","name":"Vasee","age":"19","city":"Theni"},
-              {"_id":"69","name":"Navanee","age":"20","city":"Sivagasi"}
+             {"_id":"96",
+             "name":"Vasee",
+             "age":"19",
+             "city":"Theni"
+             },
+
+            {"_id":"69",
+            "name":"Navanee",
+            "age":"20",
+            "city":"Sivagasi"
+            }
         }
     ]
 
