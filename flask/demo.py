@@ -6,7 +6,7 @@ from flask import*
 import MySQLdb
 import sqlite3
 from flask_sqlalchemy import SQLAlchemy
-
+from pymango import MongoClient
 app= Flask(__name__)
 app.secret_key="karthisree"
 
@@ -243,7 +243,7 @@ def participants():
     data = cursor.fetchall()
     return render_template("participants.html",data = data)
 
-'''
+
 
 class Employees(db.Model):
     id = db.Column('employee_id', db.Integer, primary_key =True) #use to make the name of feild to 'employee_id'
@@ -272,6 +272,53 @@ def new():
             flash('record was successfully added')
             return redirect(url_for('show_all'))
     return render_template('new.html')
+'''
+
+@app.route('/add_data')
+def add_data():
+    #TO Create mongo db
+    client = MongoClient('localhost',27017)
+
+    #Getting the database instance
+    db = client['mydb']
+
+    #create a cllection
+    coll =db['example']
+
+    #insert docs into a collection
+    doc1 = {"_id":"103","name":"Govind","age":"20","city":"Madurai"}
+    coll.insert_one(doc1)
+    print(coll.find_one())
+    return 'data added to MangoDB'
+
+@app.route('/add_multiple_data')
+def add_multiple_data():
+     #TO Create mongo db
+    client = MongoClient('localhost',27017)
+
+    #Getting the database instance
+    db = client['mydb']
+
+    #create a cllection
+    coll =db['example']
+    
+    data =[
+        {
+             {"_id":"96","name":"Vasee","age":"19","city":"Theni"},
+              {"_id":"69","name":"Navanee","age":"20","city":"Sivagasi"}
+        }
+    ]
+
+    res = coll.insert_many(data)
+    return 'multiple data added to Mongo DB'
+
+@app.route('/show_data')
+def show_data():
+    client = MongoClient('localhost',27017)
+    db = client['mydb']
+    coll =db['example']
+    return render_template("show_data.html",data = coll.find())
+    
 
 if __name__ == '__main__':
     with app.app_context():
