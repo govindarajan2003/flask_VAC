@@ -1,0 +1,24 @@
+<html>
+    <body><h3>
+        <a href="{{ url_for('show_all')}}">show all Employees-SQLAlcemy example</a>
+    </h3>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>NMAE</th>
+            <th>JOB</th>
+            <th>SALARY</th>
+        </tr>
+        <tbody>
+            {% for emp in employees %}
+            <tr>
+                <td>{{ emp.id }}</td>
+                <td>{{ emp.name }}</td>
+                <td>{{ emp.job }}</td>
+                <td>{{ emp.salary }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </body>
+</html>

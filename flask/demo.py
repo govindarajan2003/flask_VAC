@@ -244,5 +244,36 @@ def participants():
     return render_template("participants.html",data = data)
 
 '''
+
+class Employees(db.Model):
+    id = db.Column('employee_id', db.Integer, primary_key =True) #use to make the name of feild to 'employee_id'
+    name = db.Column(db.String(100))
+    job = db.Column(db.String(100)) 
+    salary =db.Column(db.Float)
+
+    def __init__(self, name,job,salary):
+        self.name =name
+        self.job = job
+        self.salary = salary
+
+@app.route('/')
+def show_all():
+    return render_template('show_all.html', employees = Employees.query.all())
+
+@app.route('/new',methods=['POST','GET'])
+def new():
+    if request.method == 'POST':
+        if not request.form['name'] or not request.form['job'] or not request.form['salary']:
+            flash('please enter all the feilds','error')
+        else:
+            e1 =Employees(request.form['name'],request.form['job'],request.form['salary'])
+            db.session.add(e1)
+            db.session.commit()
+            flash('record was successfully added')
+            return redirect(url_for('show_all'))
+    return render_template('new.html')
+
 if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)
