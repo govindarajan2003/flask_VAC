@@ -303,7 +303,7 @@ def add_multiple_data():
     coll =db['example']
     
     data =[
-        {
+        
              {"_id":"96",
              "name":"Vasee",
              "age":"19",
@@ -315,7 +315,7 @@ def add_multiple_data():
             "age":"20",
             "city":"Sivagasi"
             }
-        }
+        
     ]
 
     res = coll.insert_many(data)
