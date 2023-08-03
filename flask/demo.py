@@ -345,7 +345,7 @@ conn.close()
 
 @app.route('/')
 def index():
-    conn = psycopg2.connect(database ='govind', user ='postgre',password='root', host='localhost',port='5432')
+    conn = psycopg2.connect(database ='govind', user ='postgres',password='root', host='localhost',port='5432')
 
     cur = conn.cursor()
     cur.execute('SELECT * FROM products')
