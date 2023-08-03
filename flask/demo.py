@@ -7,6 +7,7 @@ import MySQLdb
 import sqlite3
 from flask_sqlalchemy import SQLAlchemy
 from pymongo import MongoClient
+import psycopg2
 app= Flask(__name__)
 app.secret_key="karthisree"
 
@@ -272,7 +273,7 @@ def new():
             flash('record was successfully added')
             return redirect(url_for('show_all'))
     return render_template('new.html')
-'''
+
 
 @app.route('/add_data')
 def add_data():
@@ -328,6 +329,66 @@ def show_data():
     coll =db['example']
     return render_template("show_data.html",data = coll.find())
     
+'''
+
+conn =psycopg2.connect(database="govind",user ="postgres", password="root",host ="localhost", port ="5432")
+cur =conn.cursor()
+cur.execute(
+
+    'CREATE TABLE IF NOT EXISTS products(id serial PRIMARY KEY , name varchar(100),price float);'
+)
+cur.execute("INSERT INTO products(name,price) VALUES('APPLE','1.99'),('ORANGE','2'),('MANGO','6.99');")
+conn.commit()
+
+cur.close()
+conn.close()
+
+@app.route('/')
+def index():
+    conn = psycopg2.connect(database ='govind', user ='postgre',password='root', host='localhost',port='5432')
+
+    cur = conn.cursor()
+    cur.execute('SELECT * FROM products')
+
+    data = cur.fetchall()
+    cur.close()
+    conn.close()
+    return render_template('postgre_index.html',data =data)
+
+@app.route('/create', methods=['POST'])
+def create():
+    conn= conn.cursor()
+    name = request.form['name']
+    price = request.form['price']
+    cur.execute("INSERT INTO products(name, price) VALUES(%s, %s)",(name,price))
+    conn.commit()
+    cur.close()
+    conn.close()
+    return redirect(url_for('index'))
+
+@app.route('/update', methods=[' POST'])
+def update():
+    conn = psycopg2.connect(database="govind", user ="postgres", password ="root", host ="localhost", port ="5432")
+    cur = conn.cursor()
+    name = request.form['name']
+    price = request.form['price']
+    id = request.form['id']
+    cur.execute("UPDATE product SET name = %s, price = %s WHERE id = %s",(name,price,id))
+    conn.commit()
+    return redirect(url_for('index'))
+
+
+@app.route('/delete', methods=[' POST'])
+def delete():
+    conn = psycopg2.connect(database="govind", user ="postgres", password ="root", host ="localhost", port ="5432")
+    cur = conn.cursor()
+    name = request.form['name']
+    price = request.form['price']
+    id = request.form['id']
+    cur.execute("DELETE FROM product WHERE id = %s",(id,))
+    conn.commit()
+    return redirect(url_for('index'))
+
 
 if __name__ == '__main__':
     with app.app_context():

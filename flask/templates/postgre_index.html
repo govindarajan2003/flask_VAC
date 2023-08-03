@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Crud app</h1>
+    <table border="5" cellpadding="10">
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>price</th>
+            <th>actions</th>
+        </tr>
+        {% for row in data %}
+        <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+            <td>
+                <form action="/update" method="POST">
+                    <input type="hidden" name="id" value="{{ row[0] }}">
+                    <input type="text" name="name" value="{{ row[1] }}">
+                    <input type="text" name="price" value="{{ row[2] }}">
+                    <input type="submit"  value="submit">
+                </form>
+                <form action="/delete" method="POST">
+                    <input type="hidden" name="id" value="{{ row[0] }}">
+                    <input type="submit"  value="delete">
+                </form>
+                
+            </td>
+        </tr>
+        {% endfor %}
+
+    </table>
+    <h2>CREATE A NEW FORM</h2>
+    <form action="/create" method="POST">
+        <input type="text" name="name" placeholder="name">
+        <input type="text" name="price" placeholder="price">
+        <input type="submit" value="create">      
+    </form>
+</body>
+</html>
