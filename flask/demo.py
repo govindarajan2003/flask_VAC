@@ -5,9 +5,15 @@ from forms import ContactForm
 from flask import*
 import MySQLdb
 import sqlite3
+from flask_sqlalchemy import SQLAlchemy
 
 app= Flask(__name__)
 app.secret_key="karthisree"
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root@localhost/mikey'
+app.config['SECRET_KEY'] = "random string"
+db = SQLAlchemy(app)
+
 '''
 from flask_wtf import CSRFProtect
 
@@ -200,7 +206,7 @@ def list():
 @app.route('/')
 def home():
     return render_template("home.html")
-'''
+
 #sqlite
 
 @app.route('/')
@@ -237,6 +243,6 @@ def participants():
     data = cursor.fetchall()
     return render_template("participants.html",data = data)
 
-
+'''
 if __name__ == '__main__':
     app.run(debug=True)

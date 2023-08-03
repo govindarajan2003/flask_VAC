@@ -7,13 +7,13 @@
             <th>country</th>
             <th>phone</th>
 
-            {% for row in rows %}
+            {% for participants in data %}
             <tr>
-                <td>{{ row[0] }}</td>
-                <td>{{ row[1] }}</td>
-                <td>{{ row[2] }}</td>
-                <td>{{ row[3] }}</td>
-                <td>{{ row[4] }}</td>
+                <td>{{ participants[0] }}</td>
+                <td>{{ participants[1] }}</td>
+                <td>{{ participants[2] }}</td>
+                <td>{{ participants[3] }}</td>
+                <td>{{ participants[4] }}</td>
             </tr>
             {% endfor %}
 
