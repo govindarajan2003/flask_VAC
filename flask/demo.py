@@ -9,6 +9,9 @@ from flask_sqlalchemy import SQLAlchemy
 from pymongo import MongoClient
 import psycopg2
 from flask import Flask, request, make_response
+from flask_mysqldb import MySQL
+import MySQLdb.cursors
+import re
 app= Flask(__name__)
 app.secret_key="karthisree"
 
@@ -403,7 +406,7 @@ def setcookie():
 def getcookie():
     fw = request.cookies.get('framework')
     return 'HELLO I AM  ' +  fw
-'''
+
 @app.route('/cookie_home')
 def cookieHome():
     return render_template('cookieCollector.html')
@@ -424,6 +427,66 @@ def getCookie():
     fw1= request.cookies.get('framework1')
     fw2= request.cookies.get('framework2')
     return render_template('cookieShow.html', c1= fw1, c2 = fw2)
+
+'''
+app.config['MYSQL_HOST']='localhost'
+app.config['MYSQL_USER']= 'root'
+app.config['MYSQL_PASSWORD'] =''
+app.config['MYSQL_DB'] = 'mikey'
+
+mysql =MySQL(app)
+#LOGIN SESSION
+@app.route('/')
+@app.route('/userlogin', methods=['GET','POST'])
+def login():
+    message=''
+    if request.method =='POST':
+        email = request.form['email']
+        password = request.form['password']
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * from users where email =%s and password= %s',(email,password))
+        user =cursor.fetchone()
+        if user:
+            session['loggedin'] =True
+            session['name'] =user['name']
+            session['email'] = user['email']
+            message='logged in successfully'
+            return render_template("user.html",message = message)
+        else:
+            message ="PLease enter CORRECT"
+    return render_template('userlogin.html', message = message)
+#LOG OUT SESSION
+@app.route('/logout')
+def logout():
+    session.pop("logged in", None)
+    session.pop("email", None)
+    session.pop("name", None)
+    return redirect(url_for("login"))
+
+@app.route('/userregiter', methods=['POST','GET'])
+def register():
+    message =''
+    if request.method == 'POST':
+        userName = request.form['name']
+        password = request.form['password']
+        email = request.form['email']
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * from users WHERE email = %s',(email,))
+        account = cursor.fetchone()
+        if account:
+            message = 'Account alerdy exists !'
+        elif not re.match(".+@[a-z]+\.[a-z]+", email):
+            message = 'invalid email address !'
+        elif not userName or not password or not email:
+            message = 'Please fillout the form !'
+        else:
+            cursor.execute('INSERT INTO users(name,email,password) VALUES (%s,%s,%s)',(userName,email,password))
+            mysql.connection.commit()
+            message = ' you have successfully register '
+    elif request.method == "GET":
+        message = 'please fill out the form!'
+    return render_template('userregister.html',message = message)
+ 
 
 if __name__ == '__main__':
     with app.app_context():

@@ -1,0 +1,19 @@
+<html>
+    <body>
+        <form action="{{ url_for('login')}}" method="post">
+            {% if message is defined and message %}
+            <div class="alert alert-warning">
+                <strong>
+                    {{ message }} ????
+                </strong>
+            </div>
+            {% endif %}
+            <br>
+            <h1>email</h1>
+            <input type="text" class="form-control" name="email" placeholder="enter email">
+            <h1>password</h1>
+            <input type="password" class="form-control" name="password" placeholder="enter password">
+            <input type="submit" value="submit">
+        </form>
+    </body>
+</html>
