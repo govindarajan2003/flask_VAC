@@ -8,6 +8,7 @@ import sqlite3
 from flask_sqlalchemy import SQLAlchemy
 from pymongo import MongoClient
 import psycopg2
+from flask import Flask, request, make_response
 app= Flask(__name__)
 app.secret_key="karthisree"
 
@@ -329,7 +330,7 @@ def show_data():
     coll =db['example']
     return render_template("show_data.html",data = coll.find())
     
-'''
+
 
 conn =psycopg2.connect(database="govind",user ="postgres", password="root",host ="localhost", port ="5432")
 cur =conn.cursor()
@@ -389,6 +390,19 @@ def delete():
     conn.commit()
     return redirect(url_for('index'))
 
+'''
+#using set_cookie()
+@app.route('/setcookie')
+def setcookie():
+    response= make_response('setting the cookie')
+    response.set_cookie('framework','THE ROOOOOOOOOOOOOOOOOOOOOOOOOOOOk')
+    return response
+
+#cookie from prevoios
+@app.route('/getcookie')
+def getcookie():
+    fw = request.cookies.get('framework')
+    return 'HELLO I AM  ' +  fw
 
 if __name__ == '__main__':
     with app.app_context():
