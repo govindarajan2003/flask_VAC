@@ -13,6 +13,7 @@ from flask_mysqldb import MySQL
 import MySQLdb.cursors
 import re
 from flask_bcrypt import Bcrypt
+from flask import Flask,jsonify,request
 
 app= Flask(__name__)
 app.secret_key="karthisree"
@@ -429,7 +430,7 @@ def getCookie():
     fw1= request.cookies.get('framework1')
     fw2= request.cookies.get('framework2')
     return render_template('cookieShow.html', c1= fw1, c2 = fw2)
-'''
+
 
 app.config['MYSQL_HOST']='localhost'
 app.config['MYSQL_USER']= 'root'
@@ -470,7 +471,7 @@ def logout():
     session.pop("name", None)
     return redirect(url_for("login"))
 
-@app.route('/userregiter', methods=['POST','GET'])
+@app.route('/userregister', methods=['POST','GET'])
 def register():
     message =''
     if request.method == 'POST':
@@ -506,9 +507,19 @@ def bcrypt_demo(password):
     passwordVAR = password
     hashed_password = bcrypt.generate_password_hash(passwordVAR).decode('utf-8')
     return hashed_password
+'''
 
+@app.route('/hello/')
+def hello():
+    return "<h1> HELLO PYTHON</h1>"
+
+@app.route('/hello2/',subdomain="madurai")
+def hello2():
+    return "<h1> Example for sub domain </h1>"
 
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
+    #for sub domain
+    #app.config['SERVER_NAME'] = "im.groot:5000"
     app.run(debug=True)
