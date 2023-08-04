@@ -507,7 +507,7 @@ def bcrypt_demo(password):
     passwordVAR = password
     hashed_password = bcrypt.generate_password_hash(passwordVAR).decode('utf-8')
     return hashed_password
-'''
+
 
 @app.route('/hello/')
 def hello():
@@ -516,6 +516,30 @@ def hello():
 @app.route('/hello2/',subdomain="madurai")
 def hello2():
     return "<h1> Example for sub domain </h1>"
+
+
+@app.route('/returnjson', methods=['GET'])
+def ReturnJSON():
+    if (request.method == 'GET'):
+        data = {
+            "MOdules" : 15,
+            "Subject" : "Data Structure and Algorithm",
+        }
+        return jsonify(data)
+''' 
+
+@ap.route('/show_chart',methods=['POST','GET'])
+def show_chart():
+    x[1,3,5,7]
+    y=[1,7,2,10]
+    plt.plot(x,y)
+    plt.show()
+    return ""
+
+@app.route('/ml_home')
+def home():
+    return render_template("ml_home.html")
+
 
 if __name__ == '__main__':
     with app.app_context():
