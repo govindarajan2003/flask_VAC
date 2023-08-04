@@ -390,7 +390,7 @@ def delete():
     conn.commit()
     return redirect(url_for('index'))
 
-'''
+
 #using set_cookie()
 @app.route('/setcookie')
 def setcookie():
@@ -403,18 +403,27 @@ def setcookie():
 def getcookie():
     fw = request.cookies.get('framework')
     return 'HELLO I AM  ' +  fw
-
+'''
 @app.route('/cookie_home')
 def cookieHome():
     return render_template('cookieCollector.html')
 
 @app.route('/cookieInsert', methods=['POST','GET'])
 def cookieInsert():
+    response1 = make_response("<a href='/getCookie'>Click here<\a>")
+    
     if request.method == 'POST':
         cookie1 = request.form['c1']
         cookie2 = request.form['c2']
-        return render_template("cookieShow.html", c1 = cookie1 , c2= cookie2)
-        
+        response1.set_cookie('framework1',cookie1)
+        response1.set_cookie('framework2',cookie2)
+        return response1
+
+@app.route('/getCookie')
+def getCookie():
+    fw1= request.cookies.get('framework1')
+    fw2= request.cookies.get('framework2')
+    return render_template('cookieShow.html', c1= fw1, c2 = fw2)
 
 if __name__ == '__main__':
     with app.app_context():
