@@ -404,6 +404,18 @@ def getcookie():
     fw = request.cookies.get('framework')
     return 'HELLO I AM  ' +  fw
 
+@app.route('/cookie_home')
+def cookieHome():
+    return render_template('cookieCollector.html')
+
+@app.route('/cookieInsert', methods=['POST','GET'])
+def cookieInsert():
+    if request.method == 'POST':
+        cookie1 = request.form['c1']
+        cookie2 = request.form['c2']
+        return render_template("cookieShow.html", c1 = cookie1 , c2= cookie2)
+        
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
