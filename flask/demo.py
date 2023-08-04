@@ -12,6 +12,8 @@ from flask import Flask, request, make_response
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
 import re
+from flask_bcrypt import Bcrypt
+
 app= Flask(__name__)
 app.secret_key="karthisree"
 
@@ -427,8 +429,8 @@ def getCookie():
     fw1= request.cookies.get('framework1')
     fw2= request.cookies.get('framework2')
     return render_template('cookieShow.html', c1= fw1, c2 = fw2)
-
 '''
+
 app.config['MYSQL_HOST']='localhost'
 app.config['MYSQL_USER']= 'root'
 app.config['MYSQL_PASSWORD'] =''
@@ -444,9 +446,14 @@ def login():
         email = request.form['email']
         password = request.form['password']
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * from users where email =%s and password= %s',(email,password))
+        cursor.execute('SELECT * from users where email =%s',(email,))
         user =cursor.fetchone()
+
         if user:
+            hashed_password = user["password"]
+            is_valid = bcrypt.check_password_hash(hashed_password,password)
+        
+        if is_valid:
             session['loggedin'] =True
             session['name'] =user['name']
             session['email'] = user['email']
@@ -473,6 +480,9 @@ def register():
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * from users WHERE email = %s',(email,))
         account = cursor.fetchone()
+
+        password= bcrypt_demo(password)
+
         if account:
             message = 'Account alerdy exists !'
         elif not re.match(".+@[a-z]+\.[a-z]+", email):
@@ -486,7 +496,17 @@ def register():
     elif request.method == "GET":
         message = 'please fill out the form!'
     return render_template('userregister.html',message = message)
- 
+
+#bcrypt 
+
+bcrypt = Bcrypt(app)
+
+@app.route('/bcyrpt_demo')
+def bcrypt_demo(password):
+    passwordVAR = password
+    hashed_password = bcrypt.generate_password_hash(passwordVAR).decode('utf-8')
+    return hashed_password
+
 
 if __name__ == '__main__':
     with app.app_context():
