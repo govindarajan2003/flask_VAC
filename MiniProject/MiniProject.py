@@ -109,10 +109,11 @@ def addAchievementDetail():
 def showAchievementDetail_index():
     return render_template('showAchievementPage.html')
 
-@app.route('/showAchievementDetail')
-def showAchievementDetail():
+@app.route('/showAchievementDetail/<name>')
+def showAchievementDetail(name):
+    print(name)
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cursor.execute('SELECT * from user where user= %s ')
+    cursor.execute('SELECT * from user where username= %s ',(name,))
     user =cursor.fetchone()
     session['hobby'] =user['hobby']
     session['city'] = user['city']

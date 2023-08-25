@@ -6,7 +6,7 @@
         <br>
         logged in: <strong> {{ session.name }} </strong>
         <a href="{{url_for('addAchievementDetail_index')}}">addAchievement</a>
-        <a href="{{ url_for('showAchievementDetail')}}">showAchievement</a>
+        <a href="{{ url_for('showAchievementDetail',name=session.name)}}">showAchievement</a>
         <h2>Welcome user </h2>
     </body>
 </html>
